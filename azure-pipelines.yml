@@ -1,0 +1,25 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+# Step 1: Checkout source code
+- checkout: self
+  displayName: 'Checkout code'
+
+# Step 2: Build and run tests with Maven
+- task: Maven@4
+  displayName: 'Build & Run Tests'
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'clean test'
+    options: '-DskipIntegrationTests=false'
+    publishJUnitResults: true
+    testResultsFiles: 'maventesting/target/surefire-reports/TEST-*.xml'
